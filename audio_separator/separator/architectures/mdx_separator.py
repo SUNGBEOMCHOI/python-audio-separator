@@ -208,7 +208,7 @@ class MDXSeparator(CommonSeparator):
         # self.process_vocal_split_chain(secondary_sources)
         # self.logger.debug("Vocal split chain processed.")
 
-        return output_files
+        return self.primary_stem_output_path, self.secondary_stem_output_path
 
     def initialize_model_settings(self):
         """
