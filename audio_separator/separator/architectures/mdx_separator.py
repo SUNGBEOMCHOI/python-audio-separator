@@ -183,9 +183,9 @@ class MDXSeparator(CommonSeparator):
         # Save and process the secondary stem if needed
         if not self.output_single_stem or self.output_single_stem.lower() == self.secondary_stem_name.lower():
             # self.secondary_stem_output_path = os.path.join(f"{self.audio_file_base}_({self.secondary_stem_name})_{self.model_name}.{self.output_format.lower()}")
-            if not os.path.exists(save_root_vocal):
-                os.makedirs(save_root_vocal, exist_ok=True)
-            self.secondary_stem_output_path = os.path.join(save_root_vocal, f"vocal_{self.audio_file_base}.{self.output_format.lower()}")
+            if not os.path.exists(save_root_ins):
+                os.makedirs(save_root_ins, exist_ok=True)
+            self.secondary_stem_output_path = os.path.join(save_root_ins, f"instrumental_{self.audio_file_base}.{self.output_format.lower()}")
 
             self.logger.info(f"Saving {self.secondary_stem_name} stem to {self.secondary_stem_output_path}...")
             self.final_process(self.secondary_stem_output_path, self.secondary_source, self.secondary_stem_name)
@@ -194,9 +194,9 @@ class MDXSeparator(CommonSeparator):
         # Save and process the primary stem if needed
         if not self.output_single_stem or self.output_single_stem.lower() == self.primary_stem_name.lower():
             # self.primary_stem_output_path = os.path.join(f"{self.audio_file_base}_({self.primary_stem_name})_{self.model_name}.{self.output_format.lower()}")
-            if not os.path.exists(save_root_ins):
-                os.makedirs(save_root_ins, exist_ok=True)
-            self.primary_stem_output_path = os.path.join(save_root_ins, f"instrumental_{self.audio_file_base}.{self.output_format.lower()}")
+            if not os.path.exists(save_root_vocal):
+                os.makedirs(save_root_vocal, exist_ok=True)
+            self.primary_stem_output_path = os.path.join(save_root_vocal, f"vocal_{self.audio_file_base}.{self.output_format.lower()}")
             if not isinstance(self.primary_source, np.ndarray):
                 self.primary_source = source.T
 
