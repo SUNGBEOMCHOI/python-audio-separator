@@ -96,9 +96,9 @@ class Separator:
         if log_level > logging.DEBUG:
             warnings.filterwarnings("ignore")
 
-        package_version = self.get_package_distribution("audio-separator").version
+        # package_version = self.get_package_distribution("audio-separator").version
 
-        self.logger.info(f"Separator version {package_version} instantiating with output_dir: {output_dir}, output_format: {output_format}")
+        # self.logger.info(f"Separator version {package_version} instantiating with output_dir: {output_dir}, output_format: {output_format}")
 
         self.model_file_dir = model_file_dir
         self.output_dir = output_dir
@@ -647,7 +647,7 @@ class Separator:
         self.logger.debug("Loading model completed.")
         self.logger.info(f'Load model duration: {time.strftime("%H:%M:%S", time.gmtime(int(time.perf_counter() - load_model_start_time)))}')
 
-    def separate(self, audio_file_path):
+    def separate(self, audio_file_path, save_vocal_path, save_ins_path):
         """
         Separates the audio file into different stems (e.g., vocals, instruments) using the loaded model.
 
@@ -668,7 +668,7 @@ class Separator:
         self.logger.debug(f"Normalization threshold set to {self.normalization_threshold}, waveform will lowered to this max amplitude to avoid clipping.")
 
         # Run separation method for the loaded model
-        output_files = self.model_instance.separate(audio_file_path)
+        output_files = self.model_instance.separate(audio_file_path, save_vocal_path, save_ins_path)
 
         # Clear GPU cache to free up memory
         self.model_instance.clear_gpu_cache()
