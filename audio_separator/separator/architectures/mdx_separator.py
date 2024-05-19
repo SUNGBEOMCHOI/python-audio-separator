@@ -132,7 +132,7 @@ class MDXSeparator(CommonSeparator):
             self.model_run.to(self.torch_device).eval()
             self.logger.warning("Model converted from onnx to pytorch due to segment size not matching dim_t, processing may be slower.")
 
-    def separate(self, audio_file_path, save_vocal_path, save_ins_path):
+    def separate(self, audio_file_path, save_root_vocal, save_root_ins):
         """
         Separates the audio file into primary and secondary sources based on the model's configuration.
         It processes the mix, demixes it into sources, normalizes the sources, and saves the output files.
@@ -183,7 +183,9 @@ class MDXSeparator(CommonSeparator):
         # Save and process the secondary stem if needed
         if not self.output_single_stem or self.output_single_stem.lower() == self.secondary_stem_name.lower():
             # self.secondary_stem_output_path = os.path.join(f"{self.audio_file_base}_({self.secondary_stem_name})_{self.model_name}.{self.output_format.lower()}")
-            self.secondary_stem_output_path = save_vocal_path
+            if not os.path.exists(save_root_vocal):
+                os.makedirs(save_root_vocal, exist_ok=True)
+            self.secondary_stem_output_path = os.path.join(save_root_vocal, f"vocal_{self.audio_file_base}.{self.output_format.lower()}")
 
             self.logger.info(f"Saving {self.secondary_stem_name} stem to {self.secondary_stem_output_path}...")
             self.final_process(self.secondary_stem_output_path, self.secondary_source, self.secondary_stem_name)
@@ -192,7 +194,9 @@ class MDXSeparator(CommonSeparator):
         # Save and process the primary stem if needed
         if not self.output_single_stem or self.output_single_stem.lower() == self.primary_stem_name.lower():
             # self.primary_stem_output_path = os.path.join(f"{self.audio_file_base}_({self.primary_stem_name})_{self.model_name}.{self.output_format.lower()}")
-            self.primary_stem_output_path = save_ins_path
+            if not os.path.exists(save_root_ins):
+                os.makedirs(save_root_ins, exist_ok=True)
+            self.primary_stem_output_path = os.path.join(save_root_ins, f"instrumental_{self.audio_file_base}.{self.output_format.lower()}")
             if not isinstance(self.primary_source, np.ndarray):
                 self.primary_source = source.T
 

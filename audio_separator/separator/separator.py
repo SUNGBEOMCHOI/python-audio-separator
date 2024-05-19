@@ -647,7 +647,7 @@ class Separator:
         self.logger.debug("Loading model completed.")
         self.logger.info(f'Load model duration: {time.strftime("%H:%M:%S", time.gmtime(int(time.perf_counter() - load_model_start_time)))}')
 
-    def separate(self, audio_file_path, save_vocal_path, save_ins_path):
+    def separate(self, audio_file_path, save_root_vocal, save_root_ins):
         """
         Separates the audio file into different stems (e.g., vocals, instruments) using the loaded model.
 
@@ -668,7 +668,7 @@ class Separator:
         self.logger.debug(f"Normalization threshold set to {self.normalization_threshold}, waveform will lowered to this max amplitude to avoid clipping.")
 
         # Run separation method for the loaded model
-        output_files = self.model_instance.separate(audio_file_path, save_vocal_path, save_ins_path)
+        output_files = self.model_instance.separate(audio_file_path, save_root_vocal, save_root_ins)
 
         # Clear GPU cache to free up memory
         self.model_instance.clear_gpu_cache()
